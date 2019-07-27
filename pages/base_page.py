@@ -1,4 +1,7 @@
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoAlertPresentException # в начале файла
+import math
+from .locators import BasePageLocators
 
 class BasePage(object):
 	def __init__(self, browser, url, timeout=10):
@@ -16,3 +19,14 @@ class BasePage(object):
 			return False
 		return True	
 		
+		
+	def go_to_login_page(self):
+		try:
+			self.browser.find_element(*BasePageLocators.LOGIN_LINK_INVALID)
+		except (NoSuchElementException):
+			assert self.browser.find_element(*BasePageLocators.LOGIN_LINK_INVALID) , 'NoSuchElementException'
+		return True	
+	
+
+	def should_be_login_link(self):
+		assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Ссылки нет"
